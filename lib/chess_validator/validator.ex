@@ -21,17 +21,13 @@ defmodule ChessValidator.Validator do
   end
 
   def process_fields([ head | tail ], accumulator) do
-    process_fields(tail, accumulator ++ [process_field(head)])
+    process_fields(tail, accumulator ++ [head |> String.strip |> process_field])
   end
   def process_fields([], accumulator) do
     accumulator
   end
 
   def process_field(field) do
-    if String.strip(field) == "--" do
-      nil
-    else
-      String.to_atom(field)
-    end
+    if field == "--", do: nil, else: String.to_atom(field)
   end
 end
