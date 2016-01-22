@@ -1,19 +1,26 @@
 defmodule ChessValidator.Validator do
   def validate(board_file, moves_file) do
-    {:ok, board} = File.open(board_file, [:read, :utf8])
+    board = load_board_from_file(board_file)
+    moves = load_moves_from_file(moves_file)
+  end
+
+  defp load_board_from_file(file) do
+    {:ok, board} = File.open(file, [:read, :utf8])
 
     board
     |> process_rows([])
     |> Enum.map(fn row -> row |> Enum.map(&Piece.parse/1) end)
+  end
 
-    {:ok, moves} = File.open(moves_file, [:read, :utf8])
+  defp load_moves_from_file(file) do
+    {:ok, moves} = File.open(file, [:read, :utf8])
 
     moves
     |> process_rows([])
     |> Enum.map(&Move.parse/1)
   end
 
-  def process_rows(device, accumulator) do
+  defp process_rows(device, accumulator) do
     case IO.read(device, :line) do
       :eof ->
         File.close(device)
@@ -22,7 +29,7 @@ defmodule ChessValidator.Validator do
     end
   end
 
-  def process_row(row) do
+  defp process_row(row) do
     row |> String.strip |> String.split
   end
 end
