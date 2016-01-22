@@ -1,6 +1,7 @@
 defmodule ChessValidator.CLI do
-  def run(argv) do
-    parse_args(argv)
+  def main(argv) do
+    argv
+    |> parse_args
     |> process
     |> IO.inspect
   end
