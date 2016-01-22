@@ -1,16 +1,15 @@
 defmodule ChessValidator.Validator do
   def init_board(file) do
     {:ok, device} = File.open(file, [:read, :utf8])
-
-    [] |> process_rows(device)
+    process_rows(device, [])
   end
 
-  def process_rows(accum, device) do
+  def process_rows(device, accumulator) do
     case IO.read(device, :line) do
       :eof ->
         File.close(device)
-        accum
-      row -> process_rows(accum ++ [process_row(row)], device)
+        accumulator
+      row -> process_rows(device, accumulator ++ [process_row(row)])
     end
   end
 
