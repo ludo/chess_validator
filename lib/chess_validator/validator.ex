@@ -1,7 +1,9 @@
 defmodule ChessValidator.Validator do
   def validate(board_file, moves_file) do
     board = load_board_from_file(board_file)
-    moves = load_moves_from_file(moves_file)
+
+    load_moves_from_file(moves_file)
+    |> Move.execute(board)
   end
 
   defp load_board_from_file(file) do
