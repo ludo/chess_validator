@@ -26,7 +26,6 @@ defmodule ChessValidator.CLI do
     System.halt(0)
   end
   def process({board, moves}) do
-    ChessValidator.Validator.init_board(board)
-    # ChessValidator.Validator.load_moves(moves)
+    ChessValidator.Validator.validate(board, moves)
   end
 end

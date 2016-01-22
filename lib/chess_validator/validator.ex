@@ -1,5 +1,10 @@
 defmodule ChessValidator.Validator do
-  def init_board(file) do
+  def validate(board_file, moves_file) do
+    board = load_file(board_file) |> parse_input(&Piece.parse/1)
+    # moves = load_file(moves_file) |> parse_input(&parse_move/1)
+  end
+
+  def load_file(file) do
     {:ok, device} = File.open(file, [:read, :utf8])
     process_rows(device, [])
   end
@@ -20,11 +25,19 @@ defmodule ChessValidator.Validator do
   end
 
   def process_fields([ head | tail ], accumulator) do
-    process_fields(tail, accumulator ++ [head |> String.strip |> process_field])
+    process_fields(tail, accumulator ++ [head |> String.strip])
   end
   def process_fields([], accumulator), do: accumulator
 
-  def process_field(field) do
-    if field == "--", do: nil, else: String.to_atom(field)
+  def parse_input(input, parser) do
+    Enum.map(input, fn row -> row |> Enum.map(&split_chars/1) |> Enum.map(parser) end)
+  end
+
+  def split_chars(input) do
+    { String.first(input), String.last(input) }
+  end
+
+  def parse_move(move) do
+    move
   end
 end
