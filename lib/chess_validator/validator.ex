@@ -4,7 +4,7 @@ defmodule ChessValidator.Validator do
 
     board
     |> process_rows([])
-    |> Enum.map(fn row -> row |> parse_input(&Piece.parse/1) end)
+    |> Enum.map(fn row -> row |> Enum.map(&Piece.parse/1) end)
 
     {:ok, moves} = File.open(moves_file, [:read, :utf8])
 
@@ -24,15 +24,5 @@ defmodule ChessValidator.Validator do
 
   def process_row(row) do
     row |> String.strip |> String.split
-  end
-
-  def parse_input(input, parser) do
-    input
-    |> Enum.map(&split_chars/1)
-    |> Enum.map(parser)
-  end
-
-  def split_chars(input) do
-    { String.first(input), String.last(input) }
   end
 end
