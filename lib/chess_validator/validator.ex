@@ -4,6 +4,8 @@ defmodule ChessValidator.Validator do
 
     load_moves_from_file(moves_file)
     |> Move.execute(board)
+
+    Board.pretty_print(board)
   end
 
   defp load_board_from_file(file) do
