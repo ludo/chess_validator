@@ -3,9 +3,7 @@ defmodule ChessValidator.Validator do
     board = load_board_from_file(board_file)
 
     load_moves_from_file(moves_file)
-    |> Move.execute(board)
-
-    Board.pretty_print(board)
+    |> pmap(fn move -> Move.execute(move, board) end)
   end
 
   defp load_board_from_file(file) do
@@ -35,5 +33,16 @@ defmodule ChessValidator.Validator do
 
   defp process_row(row) do
     row |> String.strip |> String.split
+  end
+
+  defp pmap(collection, fun) do
+    me = self
+    collection
+    |> Enum.map(fn (elem) ->
+      spawn_link fn -> (send me, { self, fun.(elem) }) end
+    end)
+    |> Enum.map(fn (pid) ->
+      receive do { ^pid, result } -> result end
+    end)
   end
 end
