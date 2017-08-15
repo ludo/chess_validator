@@ -3,12 +3,12 @@ defmodule ChessValidator.Mixfile do
 
   def project do
     [app: :chess_validator,
-     escript: escript_config,
+     escript: escript_config(),
      version: "0.0.1",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps()]
   end
 
   # Configuration for the OTP application
