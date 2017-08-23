@@ -20,7 +20,7 @@ defmodule Move do
     board
     |> List.replace_at(src_y, updated_src_row)
     |> List.replace_at(dest_y, updated_dest_row)
-    # |> Board.pretty_print
+    |> Board.pretty_print
   end
 
   def parse([src, dest]) do
